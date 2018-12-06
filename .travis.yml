@@ -15,7 +15,7 @@ after_success:
     - docker build -t imranoneem/mutli-worker ./worker
 # Log in to the docker CLI
 - echo "$DOCKER_PWD" | docker login -u "$DOCKER_ID" --password-stdin
-# Take this images and push them to Docker Hub
+# Take this images and push them to DockerHub
 - docker push imranoneem/mutli-client
 - docker push imranoneem/mutli-nginx
 - docker push imranoneem/mutli-server
