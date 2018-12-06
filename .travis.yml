@@ -1,0 +1,22 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t imranoneem/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+   - docker run imranoneem/react-test npm run test -- --coverage
+
+after_success:
+    - docker build -t imranoneem/mutli-client ./client
+    - docker build -t imranoneem/mutli-nginx ./nginx
+    - docker build -t imranoneem/mutli-server ./server
+    - docker build -t imranoneem/mutli-worker ./worker
+# Log in to the docker CLI
+- echo "$DOCKER_PWD" | docker login -u "$DOCKER_ID" --password-stdin
+# Take this images and push them to Docker Hub
+- docker push imranoneem/mutli-client
+- docker push imranoneem/mutli-nginx
+- docker push imranoneem/mutli-server
+- docker push imranoneem/mutli-worker
